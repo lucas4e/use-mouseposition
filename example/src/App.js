@@ -2,8 +2,9 @@ import React from 'react'
 import { useMousePosition } from 'use-mouseposition'
 
 const App = () => {
+  let toggleOn = true
   const doc = document.getElementById('exampleEl')
-  const example = useMousePosition(doc)
+  const example = useMousePosition(doc, toggleOn)
   const {x, y} = example
 
   const style = {

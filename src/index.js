@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react'
 
-export const useMousePosition = (documentRef) => {
+export const useMousePosition = (documentRef, toggleOn) => {
   
   let doc = useRef(window)
 
@@ -18,24 +18,33 @@ export const useMousePosition = (documentRef) => {
   
   useEffect(() => {
     const handleKeyPress = (e) => {
-      if (e.type === 'mousedown') {
+      if (e.type === 'mousedown' || toggleOn === true) {
         setMousePressed(true)
       } else {
         setMousePressed(false)
       }
     }
-    doc.current.addEventListener('mouseup', handleKeyPress)
-    doc.current.addEventListener('mousedown', handleKeyPress)
+    if (toggleOn === true) {
+      doc.current.addEventListener('mousemove', handleKeyPress)
+    } else {
+      doc.current.addEventListener('mouseup', handleKeyPress)
+      doc.current.addEventListener('mousedown', handleKeyPress)
+    }
+
     return () => {
-      doc.current.removeEventListener('mousedown', handleKeyPress)
-      doc.current.removeEventListener('mouseup', handleKeyPress)
+      if (toggleOn === true) {
+        doc.current.removeEventListener('mousemove', handleKeyPress)
+      } else {
+        doc.current.removeEventListener('mousedown', handleKeyPress)
+        doc.current.removeEventListener('mouseup', handleKeyPress)
+      }
     }
   }, [])
   
   
   useEffect(() => {
     const setFromEvent = (e) => {
-      if (mousePressed === true) {
+      if (mousePressed === true ) {
         setPosition({ x: e.clientX, y: e.clientY })
       }
     }
