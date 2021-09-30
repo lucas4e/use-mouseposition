@@ -1,11 +1,15 @@
 import React from 'react'
-import { useMyHook } from 'use-mouseposition'
+import { useMousePosition } from 'use-mouseposition'
+import './app.css'
 
 const App = () => {
-  const example = useMyHook()
+  const doc = document.getElementById('exampleEl')
+  const example = useMousePosition(doc)
+  const {x, y} = example
   return (
     <div>
-      {example}
+      {`X: ${x}, Y: ${y}`}
+      <div id='exampleEl' />
     </div>
   )
 }
