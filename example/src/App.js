@@ -15,8 +15,8 @@ const App = () => {
 
   return (
     <div>
-      <div id='exampleEl' style={style} />
       {`X: ${x}, Y: ${y}`}
+      <div id='exampleEl' style={style} />
     </div>
   )
 }

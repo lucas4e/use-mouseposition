@@ -42,7 +42,12 @@ export const useMousePosition = (documentRef, toggleOn) => {
   useEffect(() => {
     const setFromEvent = (e) => {
       if (mousePressed === true ) {
-        setPosition({ x: e.clientX, y: e.clientY })
+        if (doc === window) {
+          setPosition({ x: e.clientX, y: e.clientY })
+        } else {
+          const rect = doc.getBoundingClientRect
+          console.log(rect)
+        }
       }
     }
     doc.current.addEventListener('mousemove', setFromEvent)
