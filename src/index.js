@@ -10,11 +10,8 @@ export const useMousePosition = (documentRef, toggleOn) => {
   })
 
   const [mousePressed, setMousePressed] = useState(false)
-  const w = doc.current.width
-  const h = doc.current.height
-
-  
-  
+  const w = doc.current.clientWidth
+  const h = doc.current.clientHeight
   
   useEffect(() => {
     const handleKeyPress = (e) => {

@@ -11,13 +11,12 @@ const App = () => {
     width: '200px',
     height: '200px',
     border: '2px solid black'
-
   }
 
   return (
     <div>
-      {`X: ${x}, Y: ${y}`}
       <div id='exampleEl' style={style} />
+      {`X: ${x}, Y: ${y}`}
     </div>
   )
 }
