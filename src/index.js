@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from 'react'
 
-export const useMousePosition = (documentRef, toggleOn) => {
-  
+export const useMousePosition = (documentRef, toggleOn) => {  
   let doc = useRef(window)
 
   const [position, setPosition] = useState({
@@ -10,9 +9,9 @@ export const useMousePosition = (documentRef, toggleOn) => {
   })
 
   const [mousePressed, setMousePressed] = useState(false)
-  const w = doc.current.clientWidth
-  const h = doc.current.clientHeight
-  
+  const w = doc.current.innerWidth
+  const h = doc.current.innerHeight
+
   useEffect(() => {
     const handleKeyPress = (e) => {
       if (e.type === 'mousedown' || toggleOn === true) {
@@ -36,8 +35,7 @@ export const useMousePosition = (documentRef, toggleOn) => {
         doc.current.removeEventListener('mouseup', handleKeyPress)
       }
     }
-  }, [])
-  
+  }, []) 
   
   useEffect(() => {
     const setFromEvent = (e) => {
@@ -45,8 +43,10 @@ export const useMousePosition = (documentRef, toggleOn) => {
         if (doc === window) {
           setPosition({ x: e.clientX, y: e.clientY })
         } else {
-          const rect = doc.getBoundingClientRect
-          console.log(rect)
+            const rect = doc.current.getBoundingClientRect()
+            const x = e.clientX - rect.x
+            const y = e.clientY - rect.y
+            setPosition({x: Math.round(x), y: Math.round(y)})
         }
       }
     }
@@ -56,8 +56,7 @@ export const useMousePosition = (documentRef, toggleOn) => {
     }
   }, [mousePressed])
   
-  const setConstraints = () => {
-    
+  const setConstraints = () => { 
     if (position.x > w) {
       setPosition({...position, x: w})
     }
@@ -77,7 +76,7 @@ export const useMousePosition = (documentRef, toggleOn) => {
 
   const getEl = () => {
     try {
-      documentRef ? doc.current = documentRef : doc.current = window
+      documentRef ?? setDoc(documentRef)
     } catch (e) {
       return console.log(e.message)
     }
