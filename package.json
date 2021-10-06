@@ -1,6 +1,6 @@
 {
   "name": "use-mouseposition",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Get information about current mouse position on window",
   "author": "lucasersson",
   "license": "MIT",
