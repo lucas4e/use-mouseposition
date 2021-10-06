@@ -1,34 +1,35 @@
-import React from "react";
-import { useMousePosition } from "use-mouseposition";
+import React from 'react'
+import { useMousePosition } from 'use-mouseposition'
 
 const App = () => {
   // OPTIONAL: Element which you want to use the hook on.
   // Not passing an element as argument will make the hook target window.
-  const doc = document.getElementById("exampleEl");
+  const doc = document.getElementById('exampleEl')
 
   // OPTIONAL: Setting toggleOn to true will make the hook return its values on mouse movement.
   // Not passing this as an argument will make the hook only return its values when the user holds down the left mousebutton.
-  let toggleOn = true;
+  let toggleOn = true
 
   // Create the hook reference. First argument must always be the document to target the hook on.
   // If you wish to target window with the hook returning mouse position on toggle, set first argument to be window and second argument a true boolean.
   // Passing no arguments will make the hook target window and return mouse position on hold.
-  const example = useMousePosition(doc, toggleOn);
+  const example = useMousePosition(doc, toggleOn)
 
   // The hook returns an x and y value, desctructuring the variable is optional.
-  const { x, y } = example;
+  const { x, y } = example
 
   const style = {
-    width: "200px",
-    height: "200px",
-    border: "2px solid black",
-  };
+    width: '200px',
+    height: '200px',
+    border: '2px solid black'
+  }
 
   return (
     <div>
       {`X: ${x}, Y: ${y}`}
-      <div id="exampleEl" style={style} />
+      <div id='exampleEl' style={style} />
     </div>
-  );
-};
-export default App;
+  )
+}
+
+export default App
