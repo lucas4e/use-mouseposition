@@ -1,36 +1,36 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react'
 
 export const useMousePosition = (documentRef, toggleOn) => {
   const [mousePressed, setMousePressed] = useState(false)
   const [position, setPosition] = useState({
     x: 0,
-    y: 0,
+    y: 0
   })
 
-  let doc = window;
-  let w;
-  let h;
+  let doc = window
+  let w
+  let h
 
   useEffect(() => {
     const handleKeyPress = (e) => {
-      if (e.type === "mousedown" || toggleOn === true) {
+      if (e.type === 'mousedown' || toggleOn === true) {
         setMousePressed(true)
       } else {
         setMousePressed(false)
       }
     }
     if (toggleOn === true) {
-      doc.addEventListener("mousemove", handleKeyPress)
+      doc.addEventListener('mousemove', handleKeyPress)
     } else {
-      doc.addEventListener("mouseup", handleKeyPress)
-      doc.addEventListener("mousedown", handleKeyPress)
+      doc.addEventListener('mouseup', handleKeyPress)
+      doc.addEventListener('mousedown', handleKeyPress)
     }
     return () => {
       if (toggleOn === true) {
-        doc.removeEventListener("mousemove", handleKeyPress)
+        doc.removeEventListener('mousemove', handleKeyPress)
       } else {
-        doc.removeEventListener("mousedown", handleKeyPress)
-        doc.removeEventListener("mouseup", handleKeyPress)
+        doc.removeEventListener('mousedown', handleKeyPress)
+        doc.removeEventListener('mouseup', handleKeyPress)
       }
     }
   }, [])
@@ -48,9 +48,9 @@ export const useMousePosition = (documentRef, toggleOn) => {
         }
       }
     }
-    doc.addEventListener("mousemove", setFromEvent)
+    doc.addEventListener('mousemove', setFromEvent)
     return () => {
-      doc.removeEventListener("mousemove", setFromEvent)
+      doc.removeEventListener('mousemove', setFromEvent)
     }
   }, [mousePressed])
 
@@ -67,15 +67,15 @@ export const useMousePosition = (documentRef, toggleOn) => {
     if (position.y < 0) {
       setPosition({ ...position, y: 0 })
     }
-  };
+  }
 
-  if (typeof documentRef !== "object") {
-    console.log("Invalid document reference datatype")
+  if (typeof documentRef !== 'object' && documentRef !== undefined) {
+    console.log('Invalid document reference datatype')
     doc = window
   }
 
-  if (typeof toggleOn !== "boolean") {
-    console.log("Invalid datatype for toggleOn")
+  if (typeof toggleOn !== 'boolean' && toggleOn !== undefined) {
+    console.log('Invalid datatype for toggleOn')
     toggleOn = false
   }
 
@@ -87,10 +87,10 @@ export const useMousePosition = (documentRef, toggleOn) => {
     } catch (e) {
       return console.log(e.message)
     }
-  };
+  }
 
   setConstraints()
   getEl()
 
   return position
-};
+}
