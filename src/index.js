@@ -1,89 +1,96 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from "react";
 
-export const useMousePosition = (documentRef, toggleOn) => {  
-  let doc = useRef(window)
-
+export const useMousePosition = (documentRef, toggleOn) => {
+  const [mousePressed, setMousePressed] = useState(false)
   const [position, setPosition] = useState({
     x: 0,
-    y: 0
+    y: 0,
   })
 
-  const [mousePressed, setMousePressed] = useState(false)
-  const w = doc.current.innerWidth
-  const h = doc.current.innerHeight
+  let doc = window;
+  let w;
+  let h;
 
   useEffect(() => {
     const handleKeyPress = (e) => {
-      if (e.type === 'mousedown' || toggleOn === true) {
+      if (e.type === "mousedown" || toggleOn === true) {
         setMousePressed(true)
       } else {
         setMousePressed(false)
       }
     }
     if (toggleOn === true) {
-      doc.current.addEventListener('mousemove', handleKeyPress)
+      doc.addEventListener("mousemove", handleKeyPress)
     } else {
-      doc.current.addEventListener('mouseup', handleKeyPress)
-      doc.current.addEventListener('mousedown', handleKeyPress)
+      doc.addEventListener("mouseup", handleKeyPress)
+      doc.addEventListener("mousedown", handleKeyPress)
     }
-
     return () => {
       if (toggleOn === true) {
-        doc.current.removeEventListener('mousemove', handleKeyPress)
+        doc.removeEventListener("mousemove", handleKeyPress)
       } else {
-        doc.current.removeEventListener('mousedown', handleKeyPress)
-        doc.current.removeEventListener('mouseup', handleKeyPress)
+        doc.removeEventListener("mousedown", handleKeyPress)
+        doc.removeEventListener("mouseup", handleKeyPress)
       }
     }
-  }, []) 
-  
+  }, [])
+
   useEffect(() => {
     const setFromEvent = (e) => {
-      if (mousePressed === true ) {
+      if (mousePressed === true) {
         if (doc === window) {
           setPosition({ x: e.clientX, y: e.clientY })
         } else {
-            const rect = doc.current.getBoundingClientRect()
-            const x = e.clientX - rect.x
-            const y = e.clientY - rect.y
-            setPosition({x: Math.round(x), y: Math.round(y)})
+          const rect = doc.getBoundingClientRect()
+          const x = e.clientX - rect.x
+          const y = e.clientY - rect.y
+          setPosition({ x: Math.round(x), y: Math.round(y) })
         }
       }
     }
-    doc.current.addEventListener('mousemove', setFromEvent)
+    doc.addEventListener("mousemove", setFromEvent)
     return () => {
-      doc.current.removeEventListener('mousemove', setFromEvent)
+      doc.removeEventListener("mousemove", setFromEvent)
     }
   }, [mousePressed])
-  
-  const setConstraints = () => { 
+
+  const setConstraints = () => {
     if (position.x > w) {
-      setPosition({...position, x: w})
+      setPosition({ ...position, x: w })
     }
-    
     if (position.x < 0) {
-      setPosition({...position, x: 0})
+      setPosition({ ...position, x: 0 })
     }
-    
     if (position.y > h) {
-      setPosition({...position, y: h})
+      setPosition({ ...position, y: h })
     }
-    
     if (position.y < 0) {
-      setPosition({...position, y: 0})
+      setPosition({ ...position, y: 0 })
     }
+  };
+
+  if (typeof documentRef !== "object") {
+    console.log("Invalid document reference datatype")
+    doc = window
+  }
+
+  if (typeof toggleOn !== "boolean") {
+    console.log("Invalid datatype for toggleOn")
+    toggleOn = false
   }
 
   const getEl = () => {
     try {
-      documentRef ?? setDoc(documentRef)
+      documentRef ? (doc = documentRef) : (doc = window)
+      w = doc.innerWidth
+      h = doc.innerHeight
     } catch (e) {
       return console.log(e.message)
     }
-  }
+  };
 
   setConstraints()
   getEl()
 
   return position
-}
+};
